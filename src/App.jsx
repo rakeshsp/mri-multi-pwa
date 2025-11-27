@@ -1,21 +1,25 @@
 import { useState, useEffect } from "react";
 
-const APP_VERSION = "2.0.0";
+const APP_VERSION = "2.1.0";
 
 function SectionCard({ title, children }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   return (
-    <div className="border rounded-xl shadow bg-white dark:bg-gray-800 dark:border-gray-700 mb-4 break-inside-avoid-page">
+    <div className="rounded-2xl border border-white/10 bg-white/5 shadow-glass backdrop-blur-xl mb-4">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full px-4 py-3 flex justify-between items-center 
-                   bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 
-                   rounded-t-xl"
+        className="w-full px-4 py-3 flex justify-between items-center rounded-2xl rounded-b-none bg-white/5 hover:bg-white/10 transition-colors"
       >
-        <span className="font-semibold text-sm md:text-base">{title}</span>
-        <span>{open ? "−" : "+"}</span>
+        <span className="text-sm md:text-base font-semibold text-slate-50">
+          {title}
+        </span>
+        <span className="text-lg text-slate-300">{open ? "−" : "+"}</span>
       </button>
-      {open && <div className="px-4 py-3 space-y-4">{children}</div>}
+      {open && (
+        <div className="px-4 py-3 md:px-5 md:py-4 space-y-4 text-slate-100">
+          {children}
+        </div>
+      )}
     </div>
   );
 }
@@ -23,18 +27,21 @@ function SectionCard({ title, children }) {
 function Dropdown({ label, value, setValue, options }) {
   return (
     <div className="flex flex-col gap-1">
-      <label className="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-200">
+      <label className="text-xs md:text-sm font-medium text-slate-200">
         {label}
       </label>
       <select
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        className="w-full border rounded-md p-2 bg-white dark:bg-gray-900 
-                   dark:border-gray-600 text-xs md:text-sm"
+        className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs md:text-sm text-slate-50 shadow-inner outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-500/50 transition-all"
       >
         <option value="">Select…</option>
         {options.map((opt) => (
-          <option key={opt} value={opt}>
+          <option
+            key={opt}
+            value={opt}
+            className="bg-slate-900 text-slate-100"
+          >
             {opt}
           </option>
         ))}
@@ -46,12 +53,11 @@ function Dropdown({ label, value, setValue, options }) {
 function TextField({ label, value, setValue, placeholder }) {
   return (
     <div className="flex flex-col gap-1">
-      <label className="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-200">
+      <label className="text-xs md:text-sm font-medium text-slate-200">
         {label}
       </label>
       <input
-        className="w-full border rounded-md p-2 text-xs md:text-sm bg-white dark:bg-gray-900 
-                   dark:border-gray-600"
+        className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs md:text-sm text-slate-50 shadow-inner outline-none placeholder:text-slate-400 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/50 transition-all"
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder={placeholder}
@@ -63,12 +69,11 @@ function TextField({ label, value, setValue, placeholder }) {
 function TextArea({ label, value, setValue, placeholder }) {
   return (
     <div className="flex flex-col gap-1">
-      <label className="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-200">
+      <label className="text-xs md:text-sm font-medium text-slate-200">
         {label}
       </label>
       <textarea
-        className="w-full border rounded-md p-2 text-xs md:text-sm bg-white dark:bg-gray-900 
-                   dark:border-gray-600 min-h-[80px]"
+        className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs md:text-sm text-slate-50 shadow-inner outline-none placeholder:text-slate-400 focus:border-purple-400 focus:ring-2 focus:ring-purple-500/50 min-h-[80px] transition-all"
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder={placeholder}
@@ -78,7 +83,7 @@ function TextArea({ label, value, setValue, placeholder }) {
 }
 
 export default function App() {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
   const [study, setStudy] = useState("Ankle"); // Ankle / Spine / Knee / Shoulder
   const [installPromptEvent, setInstallPromptEvent] = useState(null);
   const [showInstallBanner, setShowInstallBanner] = useState(false);
@@ -291,10 +296,12 @@ export default function App() {
   if (kneePCL) kneeImpression.push(`PCL: ${kneePCL}.`);
   if (kneeMCL) kneeImpression.push(`MCL: ${kneeMCL}.`);
   if (kneeLCL) kneeImpression.push(`LCL/posterolateral corner: ${kneeLCL}.`);
-  if (kneeCartilage) kneeImpression.push(`Articular cartilage: ${kneeCartilage}.`);
+  if (kneeCartilage)
+    kneeImpression.push(`Articular cartilage: ${kneeCartilage}.`);
   if (kneeEffusion) kneeImpression.push(`Joint effusion: ${kneeEffusion}.`);
   if (kneeBoneMarrow) kneeImpression.push(`Bone marrow: ${kneeBoneMarrow}.`);
-  if (kneePatella) kneeImpression.push(`Patellofemoral alignment: ${kneePatella}.`);
+  if (kneePatella)
+    kneeImpression.push(`Patellofemoral alignment: ${kneePatella}.`);
   if (kneeSummary) kneeImpression.push(kneeSummary);
   const kneeImpressionText =
     kneeImpression.length > 0
@@ -316,12 +323,19 @@ export default function App() {
   const shoulderImpression = [];
   if (shoulderSide) shoulderImpression.push(`${shoulderSide} shoulder MRI.`);
   if (shoulderRC) shoulderImpression.push(`Rotator cuff: ${shoulderRC}.`);
-  if (shoulderBiceps) shoulderImpression.push(`Long head biceps: ${shoulderBiceps}.`);
+  if (shoulderBiceps)
+    shoulderImpression.push(`Long head biceps: ${shoulderBiceps}.`);
   if (shoulderLabrum) shoulderImpression.push(`Labrum: ${shoulderLabrum}.`);
   if (shoulderAC) shoulderImpression.push(`AC joint: ${shoulderAC}.`);
   if (shoulderGH) shoulderImpression.push(`Glenohumeral joint: ${shoulderGH}.`);
-  if (shoulderAtrophy) shoulderImpression.push(`Muscle atrophy (Goutallier/Patte): ${shoulderAtrophy}.`);
-  if (shoulderInstability) shoulderImpression.push(`Instability lesions: ${shoulderInstability}.`);
+  if (shoulderAtrophy)
+    shoulderImpression.push(
+      `Muscle atrophy (Goutallier/Patte): ${shoulderAtrophy}.`
+    );
+  if (shoulderInstability)
+    shoulderImpression.push(
+      `Instability lesions: ${shoulderInstability}.`
+    );
   if (shoulderSummary) shoulderImpression.push(shoulderSummary);
   const shoulderImpressionText =
     shoulderImpression.length > 0
@@ -421,9 +435,24 @@ export default function App() {
 
       <SectionCard title="4–9. Ligaments (Lateral, Deltoid, Syndesmotic, Spring, Sinus tarsi, Bifurcate)">
         <div className="grid md:grid-cols-2 gap-4">
-          <Dropdown label="ATFL" value={atfl} setValue={setATFL} options={ligamentOptions} />
-          <Dropdown label="CFL" value={cfl} setValue={setCFL} options={ligamentOptions} />
-          <Dropdown label="PTFL" value={ptfl} setValue={setPTFL} options={ligamentOptions} />
+          <Dropdown
+            label="ATFL"
+            value={atfl}
+            setValue={setATFL}
+            options={ligamentOptions}
+          />
+          <Dropdown
+            label="CFL"
+            value={cfl}
+            setValue={setCFL}
+            options={ligamentOptions}
+          />
+          <Dropdown
+            label="PTFL"
+            value={ptfl}
+            setValue={setPTFL}
+            options={ligamentOptions}
+          />
           <Dropdown
             label="Lateral sprain grade"
             value={latGrade}
@@ -793,7 +822,7 @@ export default function App() {
           value={spineLevelSummary}
           setValue={setSpineLevelSummary}
           placeholder={
-            "Example:\nC3–4: small central disc protrusion, no significant canal stenosis.\nC5–6: broad-based disc osteophyte complex causing mild canal stenosis and moderate right foraminal narrowing...\nL4–5: large central/ paracentral extrusion with severe canal stenosis and bilateral recess narrowing..."
+            "Example:\nC3–4: small central disc protrusion, no significant canal stenosis.\nC5–6: broad-based disc osteophyte complex causing mild canal stenosis and moderate right foraminal narrowing...\nL4–5: large central/paracentral extrusion with severe canal stenosis and bilateral recess narrowing..."
           }
         />
       </SectionCard>
@@ -1033,7 +1062,7 @@ export default function App() {
           value={shoulderSummary}
           setValue={setShoulderSummary}
           placeholder={
-            "Example:\nSupraspinatus: full-thickness tear with 1.5 cm retraction.\nInfraspinatus: tendinosis.\nSubscapularis: partial articular-sided tear.\nLabrum: anteroinferior Bankart lesion..."
+            "Example:\nSupraspinatus: full-thickness tear with 1.5 cm retraction.\nInfraspinatus: tendinosis.\nSubscapularis: partial articular-sided tear.\nLabrum: anteroinferior Bankart lesion."
           }
         />
       </SectionCard>
@@ -1056,26 +1085,48 @@ export default function App() {
 
   return (
     <div className={darkMode ? "dark" : ""}>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 dark:text-gray-100 p-4 md:p-6">
-        <div className="max-w-5xl mx-auto">
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-100">
+        <div className="mx-auto max-w-6xl px-4 py-6 md:px-6 md:py-8">
           {/* Header / About */}
-          <div className="mb-4 border rounded-xl bg-white dark:bg-gray-800 dark:border-gray-700 p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-            <div>
-              <h1 className="text-lg md:text-2xl font-bold">
+          <div className="mb-5 rounded-3xl border border-white/10 bg-white/5 shadow-glass backdrop-blur-2xl px-4 py-4 md:px-6 md:py-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div className="space-y-1">
+              <div className="inline-flex items-center gap-2 rounded-full border border-purple-500/40 bg-purple-500/10 px-3 py-1 text-[10px] md:text-xs font-medium text-purple-100">
+                <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                Live MRI Reporting Workspace
+              </div>
+              <h1 className="text-xl md:text-2xl font-bold tracking-tight text-slate-50">
                 MRI Multi-Study Reporting App
               </h1>
-              <p className="text-xs text-gray-600 dark:text-gray-300">
-                Studies: Ankle / Spine / Knee / Shoulder | Version {APP_VERSION}
+              <p className="text-[11px] md:text-xs text-slate-300">
+                Studies: Ankle · Spine · Knee · Shoulder · Version {APP_VERSION}
               </p>
-              <p className="text-xs text-gray-600 dark:text-gray-300">
-                Auto-updating via GitHub → Vercel. Use print to PDF for export; install as PWA for standalone use.
+              <p className="text-[11px] md:text-xs text-slate-400">
+                Auto-updating via GitHub → Vercel. Use print to PDF for export;
+                install as PWA for standalone use.
               </p>
             </div>
-            <div className="flex items-center gap-2 justify-end">
+
+            <div className="flex flex-col items-end gap-3">
+              <div className="inline-flex items-center rounded-full bg-white/5 border border-white/10 px-1 py-1">
+                {["Ankle", "Spine", "Knee", "Shoulder"].map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => setStudy(s)}
+                    className={`px-3 py-1.5 text-[11px] md:text-xs rounded-full transition-all ${
+                      study === s
+                        ? "bg-purple-500 text-white shadow-md shadow-purple-500/40"
+                        : "text-slate-200 hover:bg-white/10"
+                    }`}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
               <button
                 onClick={() => setDarkMode((d) => !d)}
-                className="text-xs px-3 py-1 rounded-full border dark:border-gray-500"
+                className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] md:text-xs text-slate-100 hover:bg-white/10 transition-all"
               >
+                <span className="inline-block h-3 w-3 rounded-full bg-slate-200" />
                 {darkMode ? "Light mode" : "Dark mode"}
               </button>
             </div>
@@ -1083,18 +1134,21 @@ export default function App() {
 
           {/* Install banner */}
           {showInstallBanner && (
-            <div className="mb-4 border border-blue-300 bg-blue-50 dark:bg-blue-900/40 dark:border-blue-600 text-xs rounded-lg p-3 flex justify-between items-center">
-              <span>Install this MRI app as a standalone PWA on this device.</span>
+            <div className="mb-4 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 text-[11px] md:text-xs text-emerald-50 px-3 py-2 md:px-4 md:py-3 flex justify-between items-center shadow-glass backdrop-blur-xl">
+              <span>
+                Install this MRI app as a standalone PWA on this device for
+                faster access.
+              </span>
               <div className="flex gap-2">
                 <button
                   onClick={handleInstallClick}
-                  className="px-3 py-1 rounded bg-blue-600 text-white"
+                  className="px-3 py-1 rounded-full bg-emerald-500 text-xs text-white hover:bg-emerald-400"
                 >
                   Install
                 </button>
                 <button
                   onClick={() => setShowInstallBanner(false)}
-                  className="px-3 py-1 rounded border border-blue-600"
+                  className="px-3 py-1 rounded-full border border-emerald-400 text-xs text-emerald-100 hover:bg-emerald-500/10"
                 >
                   Later
                 </button>
@@ -1102,32 +1156,28 @@ export default function App() {
             </div>
           )}
 
-          {/* Study selector */}
-          <div className="mb-4 flex flex-wrap gap-2">
-            {["Ankle", "Spine", "Knee", "Shoulder"].map((s) => (
-              <button
-                key={s}
-                onClick={() => setStudy(s)}
-                className={`px-3 py-1 text-xs rounded-full border ${
-                  study === s
-                    ? "bg-blue-600 text-white border-blue-700"
-                    : "bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 border-gray-300 dark:border-gray-600"
-                }`}
-              >
-                {s}
-              </button>
-            ))}
-          </div>
+          {/* Main layout: form + report */}
+          <div className="grid gap-4 lg:grid-cols-[minmax(0,2.2fr)_minmax(0,1.4fr)] items-start">
+            {/* Left: modality form */}
+            <div>{renderStudyForm()}</div>
 
-          {/* Main form */}
-          {renderStudyForm()}
-
-          {/* Generated report */}
-          <SectionCard title="Generated Report (Summary)">
-            <div className="space-y-2 text-xs md:text-sm">
-              {study === "Ankle" && (
-                <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded-lg whitespace-pre-wrap">
-                  {`Patient: ${patientId || "-"}    Age/Sex: ${ageSex || "-"}
+            {/* Right: Generated report + impression */}
+            <div className="space-y-4">
+              <div className="rounded-2xl border border-white/10 bg-white/5 shadow-glass backdrop-blur-xl p-4 md:p-5">
+                <div className="flex items-center justify-between mb-2">
+                  <h2 className="text-sm md:text-base font-semibold text-slate-50">
+                    Generated Report (Summary)
+                  </h2>
+                  <span className="text-[10px] md:text-[11px] text-slate-300">
+                    Editable in PACS / RIS
+                  </span>
+                </div>
+                <div className="mt-2 space-y-2 text-[11px] md:text-xs">
+                  {study === "Ankle" && (
+                    <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 whitespace-pre-wrap">
+                      {`Patient: ${patientId || "-"}    Age/Sex: ${
+                        ageSex || "-"
+                      }
 Side: ${side || "-"}    Indication: ${indication || "-"}
 
 Bone marrow: ${boneMarrowStatus || "-"}
@@ -1142,12 +1192,16 @@ CFL: ${cfl || "-"}
 PTFL: ${ptfl || "-"}
 Deltoid superficial: ${deltoidSuperficial || "-"}
 Deltoid deep: ${deltoidDeep || "-"}
-Syndesmosis (AITFL): ${aitfl || "-"} (Grade ${syndesmosisGrade || "-"})
+Syndesmosis (AITFL): ${aitfl || "-"} (Grade ${
+                        syndesmosisGrade || "-"
+                      })
 
 Spring ligament: ${springSmcnl || "-"}
 Cervical ligament: ${cervicalLig || "-"}
 ITCL: ${itclLig || "-"}
-Bifurcate CN: ${bifurcateCn || "-"}    Bifurcate CC: ${bifurcateCc || "-"}
+Bifurcate CN: ${bifurcateCn || "-"}    Bifurcate CC: ${
+                        bifurcateCc || "-"
+                      }
 
 Tibialis posterior tendon: ${tpTendon || "-"}
 Peroneus longus: ${peroneusLongus || "-"}
@@ -1156,57 +1210,72 @@ Achilles: ${achillesStatus || "-"}
 
 Plantar fascia: ${plantarFascia || "-"}
 Heel fat pad: ${heelFatPad || "-"}
-Hindfoot alignment: ${hindfootAlignment || "-"}    Arch: ${archProfile || "-"}
+Hindfoot alignment: ${hindfootAlignment || "-"}    Arch: ${
+                        archProfile || "-"
+                      }
 
-Tarsal tunnel nerve: ${tibialNerve || "-"}    Lesion: ${tarsalTunnelLesion || "-"}
+Tarsal tunnel nerve: ${tibialNerve || "-"}    Lesion: ${
+                        tarsalTunnelLesion || "-"
+                      }
 
-Coalition: ${coalitionType || "-"}    Accessory ossicles: ${accessoryOssicles || "-"}
+Coalition: ${coalitionType || "-"}    Accessory ossicles: ${
+                        accessoryOssicles || "-"
+                      }
 
 Subcutaneous edema: ${subcutEdema || "-"}
 Infection: ${infectionStatus || "-"}
 Post-op: ${postOpStatus || "-"}
 `}
-                </div>
-              )}
+                    </div>
+                  )}
 
-              {study === "Spine" && (
-                <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded-lg whitespace-pre-wrap">
-                  {spineImpressionText}
-                </div>
-              )}
+                  {study === "Spine" && (
+                    <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 whitespace-pre-wrap">
+                      {spineImpressionText}
+                    </div>
+                  )}
 
-              {study === "Knee" && (
-                <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded-lg whitespace-pre-wrap">
-                  {kneeImpressionText}
-                </div>
-              )}
+                  {study === "Knee" && (
+                    <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 whitespace-pre-wrap">
+                      {kneeImpressionText}
+                    </div>
+                  )}
 
-              {study === "Shoulder" && (
-                <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded-lg whitespace-pre-wrap">
-                  {shoulderImpressionText}
-                </div>
-              )}
-
-              <div>
-                <h3 className="font-semibold mb-1">Impression:</h3>
-                <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded-lg whitespace-pre-wrap">
-                  {impressionText}
+                  {study === "Shoulder" && (
+                    <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 whitespace-pre-wrap">
+                      {shoulderImpressionText}
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
 
-            <div className="mt-3 flex justify-end gap-2">
-              <button
-                onClick={handlePrint}
-                className="px-3 py-1 text-xs rounded bg-green-600 text-white"
-              >
-                Export as PDF (Print)
-              </button>
-            </div>
-          </SectionCard>
+              <div className="rounded-2xl border border-purple-500/30 bg-purple-500/10 shadow-glass backdrop-blur-xl p-4 md:p-5">
+                <div className="flex items-center justify-between mb-2">
+                  <h2 className="text-sm md:text-base font-semibold text-slate-50">
+                    Final Impression
+                  </h2>
+                  <span className="text-[10px] md:text-[11px] text-purple-100">
+                    High-yield summary
+                  </span>
+                </div>
+                <div className="rounded-xl border border-purple-400/40 bg-black/20 px-3 py-2 text-[11px] md:text-xs whitespace-pre-wrap text-purple-50">
+                  {impressionText}
+                </div>
+                <div className="mt-3 flex justify-end gap-2">
+                  <button
+                    onClick={handlePrint}
+                    className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500 px-3 py-1.5 text-[11px] md:text-xs font-semibold text-white shadow-md shadow-emerald-500/50 hover:bg-emerald-400 transition-all"
+                  >
+                    Export as PDF (Print)
+                  </button>
+                </div>
+              </div>
 
-          <div className="mt-4 text-xs text-center text-gray-500 dark:text-gray-400">
-            © {new Date().getFullYear()} – MRI Multi-Study Reporting Toolkit – push to GitHub to auto-update via Vercel.
+              <div className="text-[10px] md:text-[11px] text-center text-slate-500 mt-2">
+                © {new Date().getFullYear()} – MRI Multi-Study Reporting Toolkit
+                · push to GitHub → auto-update via Vercel.
+              </div>
+            </div>
           </div>
         </div>
       </div>
